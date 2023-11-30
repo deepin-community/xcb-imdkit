@@ -9,10 +9,10 @@ Build-Depends:
  debhelper-compat (= 13),
  extra-cmake-modules,
  libxcb-keysyms1-dev,
- libxcb-util0-dev,
+ libxcb-util-dev,
  libxcb1-dev,
  uthash-dev,
-Standards-Version: 4.6.0
+Standards-Version: 4.6.2
 Rules-Requires-Root: no
 Homepage: https://github.com/fcitx/xcb-imdkit
 Vcs-Git: https://salsa.debian.org/input-method-team/xcb-imdkit.git
@@ -25,7 +25,7 @@ Section: libdevel
 Depends:
  libxcb-imdkit1 (= ${binary:Version}),
  libxcb-keysyms1-dev,
- libxcb-util0-dev,
+ libxcb-util-dev,
  libxcb1-dev,
  ${misc:Depends},
 Description: XIM protocol implementation in XCB (development files)

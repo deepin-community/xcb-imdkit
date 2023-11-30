@@ -1,8 +1,35 @@
-xcb-imdkit (1.0.3-1) UNRELEASED; urgency=medium
+xcb-imdkit (1.0.5-1) unstable; urgency=medium
 
-  * update
+  * Upload to unstable.
 
- -- Debian Input Method Team <debian-input-method@lists.debian.org>  Thu, 16 Jun 2022 18:06:03 +0800
+ -- Boyuan Yang <byang@debian.org>  Tue, 13 Jun 2023 10:58:58 -0400
+
+xcb-imdkit (1.0.5-1~exp1) experimental; urgency=medium
+
+  * New upstream release.
+  * debian/source/local-options: Dropped, not needed.
+
+ -- Boyuan Yang <byang@debian.org>  Thu, 30 Mar 2023 14:53:50 -0400
+
+xcb-imdkit (1.0.4-3) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository-Browse.
+  * Fix field name typo in debian/copyright (Comments ⇒ Comment).
+
+  [ Boyuan Yang ]
+  * debian/control: Replace build-dependency of libxcb-util0-dev with
+    new libxcb-util-dev (lintian).
+
+ -- Boyuan Yang <byang@debian.org>  Tue, 31 Jan 2023 15:54:14 -0500
+
+xcb-imdkit (1.0.4-1) unstable; urgency=medium
+
+  * debian/watch: Fix upstream monitoring.
+  * New upstream version 1.0.4.
+  * debian/control: Bump Standards-Version to 4.6.1.
+
+ -- Boyuan Yang <byang@debian.org>  Sun, 20 Nov 2022 15:49:45 -0500
 
 xcb-imdkit (1.0.3-1) unstable; urgency=medium
 
