@@ -7,6 +7,7 @@
 #ifndef _XCB_IMDKIT_IMDKIT_H_
 #define _XCB_IMDKIT_IMDKIT_H_
 
+#include "xcbimdkit_export.h"
 #include "ximcommon.h"
 #include "ximproto.h"
 #include <stdbool.h>
@@ -195,6 +196,21 @@ XCBIMDKIT_EXPORT void xcb_im_destroy(xcb_im_t *im);
 XCBIMDKIT_EXPORT void xcb_im_forward_event(xcb_im_t *im,
                                            xcb_im_input_context_t *ic,
                                            xcb_key_press_event_t *event);
+
+/**
+ * Send a key event to the client.
+ *
+ * @param im XIM server
+ * @param ic Input context.
+ * @param sequence sequence number, when re-inject, should be the value from
+ * forward_event
+ * @param event key event.
+ * @see xcb_im_forward_event_fr_t.
+ */
+XCBIMDKIT_EXPORT void xcb_im_forward_event_full(xcb_im_t *im,
+                                                xcb_im_input_context_t *ic,
+                                                uint16_t sequence,
+                                                xcb_key_press_event_t *event);
 
 /**
  * Commit a string to the client.

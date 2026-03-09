@@ -134,6 +134,7 @@ struct _xcb_im_input_context_t {
     UT_hash_handle hh;
     void *data;
     xcb_im_free_function free_data_function;
+    uint16_t forward_event_sequence;
 };
 
 struct _xcb_im_client_t {
@@ -197,7 +198,6 @@ static const xcb_im_default_ic_attr_t Default_ICattr[] = {
 
 struct _xcb_im_t {
     xcb_connection_t *conn;
-    char byte_order;
     xcb_im_ximattr_fr_t imattr[ARRAY_SIZE(Default_IMattr)];
     xcb_im_xicattr_fr_t icattr[ARRAY_SIZE(Default_ICattr)];
     xcb_im_ext_fr_t extension[ARRAY_SIZE(Default_Extension)];
@@ -236,11 +236,13 @@ struct _xcb_im_t {
     xcb_screen_t *screen;
     xcb_screen_t *default_screen;
     uint32_t sequence;
-    bool init;
     xcb_im_callback callback;
     void *user_data;
-    bool sync;
     void (*logger)(const char *, ...);
+
+    uint8_t byte_order;
+    bool init;
+    bool sync;
     bool use_sync_mode;
     bool use_sync_event;
 };
@@ -275,11 +277,16 @@ void _xcb_im_send_error_message(xcb_im_t *im, xcb_im_client_t *client);
 
 void _xcb_im_destroy_client(xcb_im_t *im, xcb_im_client_t *client);
 void _xcb_im_destroy_ic(xcb_im_t *im, xcb_im_input_context_t *ic);
-void _xcb_im_set_event_mask(xcb_im_t *im, xcb_im_client_t *client,
-                            uint32_t icid, uint32_t forward_event_mask,
-                            uint32_t sync_mask);
+void _xcb_im_send_set_event_mask(xcb_im_t *im, xcb_im_client_t *client,
+                                 uint32_t icid, uint32_t forward_event_mask,
+                                 uint32_t sync_mask);
+void _xcb_im_set_ic_event_mask(xcb_im_t *im, xcb_im_input_context_t *client);
+void _xcb_im_set_im_event_mask(xcb_im_t *im, xcb_im_client_t *ic);
 void _xcb_im_add_queue(xcb_im_t *im, xcb_im_client_t *client, uint16_t icid,
                        const xcb_im_packet_header_fr_t *hdr,
                        xcb_im_forward_event_fr_t *frame, uint8_t *data);
 void _xcb_im_process_queue(xcb_im_t *im, xcb_im_client_t *client);
+static inline bool _xcb_im_has_trigger_key(xcb_im_t *im) {
+    return im->onKeys.nKeys || im->offKeys.nKeys;
+}
 #endif // _XCB_IMDKIT_IMDKIT_P_H_

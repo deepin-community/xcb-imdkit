@@ -1,3 +1,28 @@
+xcb-imdkit (1.0.9-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Boyuan Yang <byang@debian.org>  Thu, 06 Jun 2024 22:07:59 -0400
+
+xcb-imdkit (1.0.8-1) unstable; urgency=medium
+
+  * New upstream release.
+  * debian/libxcb-imdkit1.symbols: Refresh symbols file.
+
+ -- Boyuan Yang <byang@debian.org>  Wed, 24 Apr 2024 14:28:21 -0400
+
+xcb-imdkit (1.0.7-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Boyuan Yang <byang@debian.org>  Mon, 18 Mar 2024 22:54:31 -0400
+
+xcb-imdkit (1.0.6-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Boyuan Yang <byang@debian.org>  Thu, 04 Jan 2024 15:29:15 -0500
+
 xcb-imdkit (1.0.5-1) unstable; urgency=medium
 
   * Upload to unstable.

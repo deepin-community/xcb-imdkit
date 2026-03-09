@@ -836,11 +836,17 @@ void xcb_im_destroy(xcb_im_t *im) {
 
 void xcb_im_forward_event(xcb_im_t *im, xcb_im_input_context_t *ic,
                           xcb_key_press_event_t *event) {
+    xcb_im_forward_event_full(im, ic, ic->forward_event_sequence, event);
+}
+
+void xcb_im_forward_event_full(xcb_im_t *im, xcb_im_input_context_t *ic,
+                               uint16_t sequence,
+                               xcb_key_press_event_t *event) {
     xcb_im_client_t *client = ic->client;
     xcb_im_forward_event_fr_t frame;
     frame.input_method_ID = ic->client->connect_id;
     frame.input_context_ID = ic->id;
-    frame.sequence_number = event->sequence;
+    frame.sequence_number = sequence;
     if (im->use_sync_mode) {
         frame.flag = XCB_XIM_SYNCHRONOUS;
         client->sync = true;
@@ -891,22 +897,19 @@ void xcb_im_commit_string(xcb_im_t *im, xcb_im_input_context_t *ic,
 }
 
 void xcb_im_preedit_start(xcb_im_t *im, xcb_im_input_context_t *ic) {
-    if (im->onKeys.nKeys == 0 && im->offKeys.nKeys == 0) {
+    if (!_xcb_im_has_trigger_key(im)) {
         return;
     }
 
-    uint32_t sync_event_mask = im->use_sync_event ? 0 : im->event_mask;
-    sync_event_mask = ~sync_event_mask;
-    _xcb_im_set_event_mask(im, ic->client, ic->id, im->event_mask,
-                           sync_event_mask);
+    _xcb_im_set_ic_event_mask(im, ic);
 }
 
 void xcb_im_preedit_end(xcb_im_t *im, xcb_im_input_context_t *ic) {
-    if (im->onKeys.nKeys == 0 && im->offKeys.nKeys == 0) {
+    if (!_xcb_im_has_trigger_key(im)) {
         return;
     }
 
-    _xcb_im_set_event_mask(im, ic->client, ic->id, 0, 0);
+    _xcb_im_send_set_event_mask(im, ic->client, ic->id, 0, 0);
 }
 
 void xcb_im_sync_xlib(xcb_im_t *im, xcb_im_input_context_t *ic) {
@@ -1019,9 +1022,9 @@ void _xcb_im_destroy_client(xcb_im_t *im, xcb_im_client_t *client) {
     im->free_list = client;
 }
 
-void _xcb_im_set_event_mask(xcb_im_t *im, xcb_im_client_t *client,
-                            uint32_t icid, uint32_t forward_event_mask,
-                            uint32_t sync_mask) {
+void _xcb_im_send_set_event_mask(xcb_im_t *im, xcb_im_client_t *client,
+                                 uint32_t icid, uint32_t forward_event_mask,
+                                 uint32_t sync_mask) {
     xcb_im_set_event_mask_fr_t frame;
     frame.forward_event_mask = forward_event_mask;
     frame.synchronous_event_mask = sync_mask;
@@ -1167,6 +1170,22 @@ bool xcb_im_support_extension(xcb_im_t *im, uint16_t major_code,
         }
     }
     return false;
+}
+
+void _xcb_im_set_ic_event_mask(xcb_im_t *im, xcb_im_input_context_t *ic) {
+    DebugLog("xcb_im_set_ic_event_mask");
+    uint32_t sync_event_mask = im->use_sync_event ? 0 : im->event_mask;
+    sync_event_mask = ~sync_event_mask;
+    _xcb_im_send_set_event_mask(im, ic->client, ic->id, im->event_mask,
+                                sync_event_mask);
+}
+
+void _xcb_im_set_im_event_mask(xcb_im_t *im, xcb_im_client_t *client) {
+    DebugLog("xcb_im_set_im_event_mask");
+    uint32_t sync_event_mask = im->use_sync_event ? 0 : im->event_mask;
+    sync_event_mask = ~sync_event_mask;
+    // Zero id means set im forward mask.
+    _xcb_im_send_set_event_mask(im, client, 0, im->event_mask, sync_event_mask);
 }
 
 void xcb_im_input_context_set_data(xcb_im_input_context_t *ic, void *data,

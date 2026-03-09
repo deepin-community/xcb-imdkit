@@ -8,6 +8,7 @@ libxcb-imdkit.so.1 libxcb-imdkit1 #MINVER#
  xcb_im_destroy@Base 1.0.1
  xcb_im_filter_event@Base 1.0.1
  xcb_im_forward_event@Base 1.0.1
+ xcb_im_forward_event_full@Base 1.0.8
  xcb_im_geometry_callback@Base 1.0.1
  xcb_im_input_context_get_client_window@Base 1.0.1
  xcb_im_input_context_get_data@Base 1.0.1
@@ -47,6 +48,7 @@ libxcb-imdkit.so.1 libxcb-imdkit1 #MINVER#
  xcb_xim_ext_move@Base 1.0.1
  xcb_xim_filter_event@Base 1.0.1
  xcb_xim_forward_event@Base 1.0.1
+ xcb_xim_forward_event_full@Base 1.0.8
  xcb_xim_get_encoding@Base 1.0.3
  xcb_xim_get_ic_values@Base 1.0.1
  xcb_xim_get_im_values@Base 1.0.1
